@@ -1,0 +1,5 @@
+﻿Type,Primary Value,Admin,Finance User,Lending Operator - Retail
+fieldPermissions,Case.BOA_Trnsfr_Req_Form_Uploaded_to_myDox__c,RW,R,R
+userPermissions,EditPublicFilters,T,T,F
+layoutAssignments,Opportunity-MasterCard,Opportunity.MasterCard,Opportunity.MasterCard,Opportunity.MasterCard
+fieldPermissions,Account.Name,RW,R,R
