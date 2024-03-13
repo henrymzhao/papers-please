@@ -94,6 +94,48 @@ export default class GenerateProfile extends SfCommand<GenerateProfileResult> {
           });
           break;
         case 'userPermissions':
+          profilesToCreate.forEach((profile) => {
+            if (!Object.keys((ret[profile] as Map)['Profile']).includes('userPermissions')) {
+              ((ret[profile] as Map)['Profile'] as Map)['userPermissions'] = [];
+            }
+            const layoutAssn: userPermission = {
+              name: entry['Primary Value'],
+              enabled: ['t', 'true'].includes(entry[profile].toLowerCase()),
+            };
+            (((ret[profile] as Map)['Profile'] as Map)['userPermissions'] as userPermission[]).push(layoutAssn);
+          });
+          break;
+        case 'layoutAssignments':
+          profilesToCreate.forEach((profile) => {
+            if (!Object.keys((ret[profile] as Map)['Profile']).includes('layoutAssignments')) {
+              ((ret[profile] as Map)['Profile'] as Map)['layoutAssignments'] = [];
+            }
+            const layoutAssn: layoutAssignment = {
+              layout: entry['Primary Value'],
+              recordType: entry[profile],
+            };
+            (((ret[profile] as Map)['Profile'] as Map)['layoutAssignments'] as layoutAssignment[]).push(layoutAssn);
+          });
+          break;
+        case 'objectPermissions':
+          profilesToCreate.forEach((profile) => {
+            if (entry[profile].toLowerCase() === 'skip') {
+              return;
+            }
+            if (!Object.keys((ret[profile] as Map)['Profile']).includes('objectPermissions')) {
+              ((ret[profile] as Map)['Profile'] as Map)['objectPermissions'] = [];
+            }
+            const objPerm: objectPermission = {
+              allowCreate: entry[profile].toLowerCase().includes('c'),
+              allowDelete: entry[profile].toLowerCase().includes('d'),
+              allowEdit: entry[profile].toLowerCase().includes('u'),
+              allowRead: entry[profile].toLowerCase().includes('r'),
+              modifyAllRecords: entry[profile].toLowerCase().includes('m'),
+              viewAllRecords: entry[profile].toLowerCase().includes('v'),
+              object: entry['Primary Value'],
+            };
+            (((ret[profile] as Map)['Profile'] as Map)['objectPermissions'] as objectPermission[]).push(objPerm);
+          });
           break;
       }
     });
@@ -133,6 +175,26 @@ interface fieldPermission {
   editable: boolean;
   field: string;
   readable: boolean;
+}
+
+interface objectPermission {
+  allowCreate: boolean;
+  allowDelete: boolean;
+  allowEdit: boolean;
+  allowRead: boolean;
+  modifyAllRecords: boolean;
+  object: string;
+  viewAllRecords: boolean;
+}
+
+interface userPermission {
+  enabled: boolean;
+  name: string;
+}
+
+interface layoutAssignment {
+  layout: string;
+  recordType: string;
 }
 
 interface Map {
