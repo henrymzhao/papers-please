@@ -21,3 +21,7 @@ More information about a flag. Don't repeat the summary.
 # flags.csv-file.summary
 
 CSV of Profile permissions.
+
+# flags.output-directory.summary
+
+Output directory of generated profiles.
