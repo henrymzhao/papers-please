@@ -1,0 +1,16 @@
+﻿Type,Primary Value,Test_permission_set,Foobar
+classAccesses,UMT_SandboxCalloutService,TRUE,TRUE
+customMetadataTypeAccesses,Test_Metadata__mdt,TRUE,TRUE
+customPermissions,Test_Permission,TRUE,TRUE
+fieldPermissions,Account.AccountNumber,R,RW
+fieldPermissions,Account.Industry,RW,RW
+fieldPermissions,Account.NumberofLocations__c,R,RW
+fieldPermissions,Account.ShippingAddress,R,RW
+fieldPermissions,Account.Site,RW,RW
+hasActivationRequired,,FALSE,FALSE
+label,,Test permission set,foobar baz?
+license,,Salesforce,Salesforce
+objectPermissions,Account,RU+MV,CRUD+MV
+tabSettings,standard-Account,TRUE,TRUE
+userPermissions,AuthorApex,TRUE,TRUE
+userPermissions,ViewSetup,TRUE,TRUE
