@@ -7,6 +7,8 @@
 	Author:  Stefan Goessner/2006
 	Web:     http://goessner.net/
 */
+import xmlFormat from 'xml-formatter';
+
 export default function json2xml(o, tab) {
   var toXml = function (v, name, ind) {
       var xml = '';
@@ -35,5 +37,6 @@ export default function json2xml(o, tab) {
     },
     xml = '';
   for (var m in o) xml += toXml(o[m], m, '');
-  return tab ? xml.replace(/\t/g, tab) : xml.replace(/\t|\n/g, '');
+  // return tab ? xml.replace(/\t/g, tab) : xml.replace(/\t|\n/g, '');
+  return xmlFormat(xml, { collapseContent: true });
 }

@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import fs from 'node:fs';
+import path from 'node:path';
 import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import json2xml from '../../util/json2xml.js';
@@ -41,6 +42,7 @@ export default class GenerateProfile extends SfCommand<GenerateProfileResult> {
     const { flags } = await this.parse(GenerateProfile);
 
     const csvPath: string = flags['csv-file'];
+    const outputPath: string = flags['output-directory'];
 
     const csvInput: string = fs.readFileSync(csvPath, {
       encoding: 'utf-8',
@@ -51,29 +53,12 @@ export default class GenerateProfile extends SfCommand<GenerateProfileResult> {
 
     profilesToCreate.forEach((profile) => {
       const profileData = preppedJsonForConversion[profile];
-
-      this.log(JSON.stringify(profileData));
-      this.log(json2xml(profileData));
-      this.log('next');
+      fs.mkdirSync(outputPath, { recursive: true });
+      fs.writeFileSync(
+        path.join(outputPath, `${profile}.profile-meta.xml`),
+        '<?xml version="1.0" encoding="UTF-8"?>\n' + json2xml(profileData)
+      );
     });
-
-    // this.log(json2xml(
-    //     {
-    //         Profile: {
-    //             '@xmlns': 'http://soap.sforce.com/2006/04/metadata',
-    //             layoutAssignments: [
-    //                 {
-    //                     layout: 'Case-Web Case',
-    //                     recordType: 'Case.Web_Case'
-    //                 },
-    //                 {
-    //                     layout: 'Lead-Web Case',
-    //                     recordType: 'Lead.Web_Lead'
-    //                 }
-    //             ]
-    //         }
-    //     }
-    //     , '\t'));
 
     return {
       success: false,
@@ -86,9 +71,6 @@ export default class GenerateProfile extends SfCommand<GenerateProfileResult> {
     profilesToCreate.forEach((profile: string) => {
       ret[profile] = this.profileFactory();
     });
-
-    // this.log('reached');
-    // this.log(JSON.stringify(ret));
 
     jsonInput.forEach((entry) => {
       switch (entry.Type) {
