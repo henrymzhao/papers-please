@@ -4,7 +4,7 @@ import path from 'node:path';
 import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import json2xml from '../../util/json2xml.js';
-import { csvToJson, getFileNames, mapCsvToJSON, FILE_TYPE } from '../../util/generateUtils.ts';
+import { csvToJson, getFileNames, mapCsvToJSON, FILE_TYPE } from '../../util/generateUtils.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('papers-please', 'generate.profile');

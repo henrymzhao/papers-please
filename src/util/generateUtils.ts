@@ -16,7 +16,7 @@ interface objectPermission {
   viewAllRecords: boolean;
 }
 
-interface userPermission {
+interface genericNameEnablement {
   enabled: boolean;
   name: string;
 }
@@ -24,6 +24,10 @@ interface userPermission {
 interface layoutAssignment {
   layout: string;
   recordType: string;
+}
+interface classAccess {
+  enabled: boolean;
+  apexClass: string;
 }
 
 interface Map {
@@ -79,66 +83,84 @@ export function mapCsvToJSON(
   jsonInput.forEach((entry) => {
     switch (entry.Type) {
       case 'fieldPermissions':
-        filesToCreate.forEach((profile) => {
-          if (!Object.keys((ret[profile] as Map)[jsonFileKey]).includes('fieldPermissions')) {
-            ((ret[profile] as Map)[jsonFileKey] as Map)['fieldPermissions'] = [];
+        filesToCreate.forEach((fileName) => {
+          if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes('fieldPermissions')) {
+            ((ret[fileName] as Map)[jsonFileKey] as Map)['fieldPermissions'] = [];
           }
           const fieldPerm: fieldPermission = {
             field: entry['Primary Value'],
             editable: false,
             readable: false,
           };
-          if (entry[profile].includes('W')) {
+          if (entry[fileName].includes('W')) {
             fieldPerm.editable = true;
           }
-          if (entry[profile].includes('R')) {
+          if (entry[fileName].includes('R')) {
             fieldPerm.readable = true;
           }
-          (((ret[profile] as Map)[jsonFileKey] as Map)['fieldPermissions'] as fieldPermission[]).push(fieldPerm);
+          (((ret[fileName] as Map)[jsonFileKey] as Map)['fieldPermissions'] as fieldPermission[]).push(fieldPerm);
         });
         break;
+      case 'customMetadataTypeAccesses':
       case 'userPermissions':
-        filesToCreate.forEach((profile) => {
-          if (!Object.keys((ret[profile] as Map)[jsonFileKey]).includes('userPermissions')) {
-            ((ret[profile] as Map)[jsonFileKey] as Map)['userPermissions'] = [];
+        filesToCreate.forEach((fileName) => {
+          if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes(entry.Type)) {
+            ((ret[fileName] as Map)[jsonFileKey] as Map)[entry.Type] = [];
           }
-          const layoutAssn: userPermission = {
+          const layoutAssn: genericNameEnablement = {
             name: entry['Primary Value'],
-            enabled: ['t', 'true'].includes(entry[profile].toLowerCase()),
+            enabled: ['t', 'true'].includes(entry[fileName].toLowerCase()),
           };
-          (((ret[profile] as Map)[jsonFileKey] as Map)['userPermissions'] as userPermission[]).push(layoutAssn);
+          (((ret[fileName] as Map)[jsonFileKey] as Map)[entry.Type] as genericNameEnablement[]).push(layoutAssn);
+        });
+        break;
+      case 'classAccesses':
+        filesToCreate.forEach((fileName) => {
+          if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes('classAccesses')) {
+            ((ret[fileName] as Map)[jsonFileKey] as Map)['classAccesses'] = [];
+          }
+          const apexClass: classAccess = {
+            apexClass: entry['Primary Value'],
+            enabled: ['t', 'true'].includes(entry[fileName].toLowerCase()),
+          };
+          (((ret[fileName] as Map)[jsonFileKey] as Map)['classAccesses'] as classAccess[]).push(apexClass);
         });
         break;
       case 'layoutAssignments':
-        filesToCreate.forEach((profile) => {
-          if (!Object.keys((ret[profile] as Map)[jsonFileKey]).includes('layoutAssignments')) {
-            ((ret[profile] as Map)[jsonFileKey] as Map)['layoutAssignments'] = [];
+        filesToCreate.forEach((fileName) => {
+          if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes('layoutAssignments')) {
+            ((ret[fileName] as Map)[jsonFileKey] as Map)['layoutAssignments'] = [];
           }
           const layoutAssn: layoutAssignment = {
             layout: entry['Primary Value'],
-            recordType: entry[profile],
+            recordType: entry[fileName],
           };
-          (((ret[profile] as Map)[jsonFileKey] as Map)['layoutAssignments'] as layoutAssignment[]).push(layoutAssn);
+          (((ret[fileName] as Map)[jsonFileKey] as Map)['layoutAssignments'] as layoutAssignment[]).push(layoutAssn);
         });
         break;
       case 'objectPermissions':
-        filesToCreate.forEach((profile) => {
-          if (entry[profile].toLowerCase() === 'skip') {
+        filesToCreate.forEach((fileName) => {
+          if (entry[fileName].toLowerCase() === 'skip') {
             return;
           }
-          if (!Object.keys((ret[profile] as Map)[jsonFileKey]).includes('objectPermissions')) {
-            ((ret[profile] as Map)[jsonFileKey] as Map)['objectPermissions'] = [];
+          if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes('objectPermissions')) {
+            ((ret[fileName] as Map)[jsonFileKey] as Map)['objectPermissions'] = [];
           }
           const objPerm: objectPermission = {
-            allowCreate: entry[profile].toLowerCase().includes('c'),
-            allowDelete: entry[profile].toLowerCase().includes('d'),
-            allowEdit: entry[profile].toLowerCase().includes('u'),
-            allowRead: entry[profile].toLowerCase().includes('r'),
-            modifyAllRecords: entry[profile].toLowerCase().includes('m'),
-            viewAllRecords: entry[profile].toLowerCase().includes('v'),
+            allowCreate: entry[fileName].toLowerCase().includes('c'),
+            allowDelete: entry[fileName].toLowerCase().includes('d'),
+            allowEdit: entry[fileName].toLowerCase().includes('u'),
+            allowRead: entry[fileName].toLowerCase().includes('r'),
+            modifyAllRecords: entry[fileName].toLowerCase().includes('m'),
+            viewAllRecords: entry[fileName].toLowerCase().includes('v'),
             object: entry['Primary Value'],
           };
-          (((ret[profile] as Map)[jsonFileKey] as Map)['objectPermissions'] as objectPermission[]).push(objPerm);
+          (((ret[fileName] as Map)[jsonFileKey] as Map)['objectPermissions'] as objectPermission[]).push(objPerm);
+        });
+        break;
+      case 'label':
+        filesToCreate.forEach((fileName) => {
+          ((ret[fileName] as Map)[jsonFileKey] as Map)['label'] = entry[fileName];
         });
         break;
     }

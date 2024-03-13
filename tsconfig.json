@@ -5,9 +5,7 @@
     "rootDir": "src",
     "skipLibCheck": true,
     "allowJs": true,
-    "noImplicitAny": true,
-    "allowImportingTsExtensions": true,
-    "noEmit": true
+    "noImplicitAny": true
   },
   "include": ["./src/**/*.ts", "./src/**/*.js"]
 }

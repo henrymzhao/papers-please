@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { csvToJson, FILE_TYPE, getFileNames, mapCsvToJSON } from '../../util/generateUtils.ts';
+import { csvToJson, FILE_TYPE, getFileNames, mapCsvToJSON } from '../../util/generateUtils.js';
 import json2xml from '../../util/json2xml.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
