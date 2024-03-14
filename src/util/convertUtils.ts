@@ -39,37 +39,41 @@ export function convertXMLToCSV(xmlFileNames: string[], inputPath: string, outpu
                         accessLevel += (primaryVal['readable'][0]) === 'true' ? 'R' : '';
                         accessLevel += (primaryVal['editable'][0]) === 'true' ? 'W' : '';
                         break;
+                    case 'customPermissions':
                     case 'userPermissions':
                         primaryValue = primaryVal['name'][0] as string;
-                        accessLevel += (primaryVal['enabled'][0]) === 'true' ? 'T' : 'F';
+                        accessLevel += (primaryVal['enabled'][0]);
                         break;
                     case 'layoutAssignments':
                         primaryValue = primaryVal['layout'][0] as string;
                         accessLevel += primaryVal['recordType'][0];
                         break;
+                    case 'tabSettings':
                     case 'tabVisibilities':
                         primaryValue = primaryVal['tab'][0] as string;
-                        accessLevel += (primaryVal['visibility'][0] as string).toLowerCase() === 'defaulton' ? 'T' : 'F';
+                        accessLevel += primaryVal['visibility'][0] as string;
                         break;
                     case 'classAccesses':
                         primaryValue = primaryVal['apexClass'][0] as string;
-                        accessLevel += (primaryVal['enabled'][0]) === 'true' ? 'T' : 'F';
+                        accessLevel += (primaryVal['enabled'][0]);
                         break;
                     case 'recordTypeVisibilities':
                         primaryValue = primaryVal['recordType'][0] as string;
                         if (primaryVal['default']?.[0] && primaryVal['default'][0] === 'true') {
                             accessLevel = 'Default';
                         } else {
-                            accessLevel = primaryVal['visible'][0] === 'true' ? 'T' : 'F';
+                            accessLevel = primaryVal['visible'][0] as string;
                         }
                         break;
+                    case 'label':
+                    case 'license':
+                    case 'description':
                     case 'userLicense':
-                        primaryValue = 'userLicense';
-                        accessLevel = primaryVal as unknown as string;
-                        break;
                     case 'custom':
-                        primaryValue = 'custom';
-                        accessLevel = (primaryVal as unknown as string).toLowerCase() === 'true' ? 'T' : 'F';
+                    case 'hasActivationRequired':
+                        primaryValue = attribute;
+                        accessLevel = ['t', 'true', 'f', 'false'].includes((primaryVal as unknown as string).toLowerCase()) ?
+                            (primaryVal as unknown as string).toLowerCase() : primaryVal as unknown as string
                         break;
                     case 'objectPermissions':
                         primaryValue = primaryVal['object'][0] as string;

@@ -41,7 +41,7 @@ export default class GeneratePermset extends SfCommand<GeneratePermsetResult> {
     });
     const rawJsonConversion: Array<Record<string, string>> = csvToJson(csvInput);
     const profilesToCreate = getFileNames(rawJsonConversion[0]);
-    const preppedJsonForConversion = mapCsvToJSON(rawJsonConversion, profilesToCreate, FILE_TYPE.PROFILE);
+    const preppedJsonForConversion = mapCsvToJSON(rawJsonConversion, profilesToCreate, FILE_TYPE.PERMSET);
 
     profilesToCreate.forEach((profile) => {
       const profileData = preppedJsonForConversion[profile];
