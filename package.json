@@ -56,6 +56,14 @@
       },
       "convert": {
         "description": "description for convert"
+      },
+      "papers": {
+        "description": "description for papers",
+        "subtopics": {
+          "convert": {
+            "description": "description for papers.convert"
+          }
+        }
       }
     },
     "flexibleTaxonomy": true

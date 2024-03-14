@@ -96,7 +96,7 @@ export function mapCsvToJSON(
     switch (entry.Type) {
       case 'fieldPermissions':
         filesToCreate.forEach((fileName) => {
-          if (entry[fileName].toLowerCase() === 'skip') {
+          if (entry[fileName].toLowerCase() === '-') {
             return;
           }
           if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes('fieldPermissions')) {
@@ -118,7 +118,7 @@ export function mapCsvToJSON(
         break;
       case 'recordTypeVisibilities':
         filesToCreate.forEach((fileName) => {
-          if (entry[fileName].toLowerCase() === 'skip') {
+          if (entry[fileName].toLowerCase() === '-') {
             return;
           }
           if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes('recordTypeVisibilities')) {
@@ -137,7 +137,7 @@ export function mapCsvToJSON(
       case 'customMetadataTypeAccesses':
       case 'userPermissions':
         filesToCreate.forEach((fileName) => {
-          if (entry[fileName].toLowerCase() === 'skip') {
+          if (entry[fileName].toLowerCase() === '-') {
             return;
           }
           if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes(entry.Type)) {
@@ -152,7 +152,7 @@ export function mapCsvToJSON(
         break;
       case 'classAccesses':
         filesToCreate.forEach((fileName) => {
-          if (entry[fileName].toLowerCase() === 'skip') {
+          if (entry[fileName].toLowerCase() === '-') {
             return;
           }
           if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes('classAccesses')) {
@@ -167,7 +167,7 @@ export function mapCsvToJSON(
         break;
       case 'layoutAssignments':
         filesToCreate.forEach((fileName) => {
-          if (entry[fileName].toLowerCase() === 'skip') {
+          if (entry[fileName].toLowerCase() === '-') {
             return;
           }
           if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes('layoutAssignments')) {
@@ -182,7 +182,7 @@ export function mapCsvToJSON(
         break;
       case 'tabVisibilities':
         filesToCreate.forEach((fileName) => {
-          if (entry[fileName].toLowerCase() === 'skip') {
+          if (entry[fileName].toLowerCase() === '-') {
             return;
           }
           if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes('tabVisibilities')) {
@@ -197,7 +197,7 @@ export function mapCsvToJSON(
         break;
       case 'objectPermissions':
         filesToCreate.forEach((fileName) => {
-          if (entry[fileName].toLowerCase() === 'skip') {
+          if (entry[fileName].toLowerCase() === '-') {
             return;
           }
           if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes('objectPermissions')) {
@@ -217,7 +217,7 @@ export function mapCsvToJSON(
         break;
       case 'label':
         filesToCreate.forEach((fileName) => {
-          if (entry[fileName].toLowerCase() === 'skip') {
+          if (entry[fileName].toLowerCase() === '-') {
             return;
           }
           ((ret[fileName] as Map)[jsonFileKey] as Map)['label'] = entry[fileName];
@@ -225,7 +225,7 @@ export function mapCsvToJSON(
         break;
       case 'custom':
         filesToCreate.forEach((fileName) => {
-          if (entry[fileName].toLowerCase() === 'skip') {
+          if (entry[fileName].toLowerCase() === '-') {
             return;
           }
           ((ret[fileName] as Map)[jsonFileKey] as Map)['custom'] = ['t', 'true'].includes(entry[fileName].toLowerCase())
@@ -235,7 +235,7 @@ export function mapCsvToJSON(
         break;
       case 'userLicense':
         filesToCreate.forEach((fileName) => {
-          if (entry[fileName].toLowerCase() === 'skip') {
+          if (entry[fileName].toLowerCase() === '-') {
             return;
           }
           ((ret[fileName] as Map)[jsonFileKey] as Map)['userLicense'] = entry[fileName];

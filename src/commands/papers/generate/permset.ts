@@ -4,6 +4,7 @@ import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import { csvToJson, FILE_TYPE, getFileNames, mapCsvToJSON } from '../../../util/generateUtils.js';
 import json2xml from '../../../util/json2xml.js';
+import {PERMSET_POSTFIX} from '../../../util/constants.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('papers-please', 'generate.permset');
@@ -46,7 +47,7 @@ export default class GeneratePermset extends SfCommand<GeneratePermsetResult> {
       const profileData = preppedJsonForConversion[profile];
       fs.mkdirSync(outputPath, { recursive: true });
       fs.writeFileSync(
-        path.join(outputPath, `${profile}.permissionset-meta.xml`),
+        path.join(outputPath, `${profile}${PERMSET_POSTFIX}`),
         '<?xml version="1.0" encoding="UTF-8"?>\n' + json2xml(profileData)
       );
     });
