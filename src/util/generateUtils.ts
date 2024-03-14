@@ -1,4 +1,4 @@
-const DELIMITER: string = ',';
+export const DELIMITER: string = ',';
 
 interface fieldPermission {
   editable: boolean;
@@ -25,12 +25,24 @@ interface layoutAssignment {
   layout: string;
   recordType: string;
 }
+
+interface tabVisibility {
+  tab: string;
+  visibility: 'DefaultOn' | 'DefaultOff';
+}
+
+interface recordTypeVisibility {
+  default: boolean;
+  recordType: string;
+  visible: boolean;
+}
+
 interface classAccess {
   enabled: boolean;
   apexClass: string;
 }
 
-interface Map {
+export interface Map {
   [key: string]: string | ThisType<this> | string[];
 }
 
@@ -80,16 +92,19 @@ export function mapCsvToJSON(
 
   const jsonFileKey: string = fileType === FILE_TYPE.PROFILE ? 'Profile' : 'PermissionSet';
 
-  jsonInput.forEach((entry) => {
+  jsonInput.sort().forEach((entry) => {
     switch (entry.Type) {
       case 'fieldPermissions':
         filesToCreate.forEach((fileName) => {
+          if (entry[fileName].toLowerCase() === 'skip') {
+            return;
+          }
           if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes('fieldPermissions')) {
             ((ret[fileName] as Map)[jsonFileKey] as Map)['fieldPermissions'] = [];
           }
           const fieldPerm: fieldPermission = {
-            field: entry['Primary Value'],
             editable: false,
+            field: entry['Primary Value'],
             readable: false,
           };
           if (entry[fileName].includes('W')) {
@@ -101,9 +116,30 @@ export function mapCsvToJSON(
           (((ret[fileName] as Map)[jsonFileKey] as Map)['fieldPermissions'] as fieldPermission[]).push(fieldPerm);
         });
         break;
+      case 'recordTypeVisibilities':
+        filesToCreate.forEach((fileName) => {
+          if (entry[fileName].toLowerCase() === 'skip') {
+            return;
+          }
+          if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes('recordTypeVisibilities')) {
+            ((ret[fileName] as Map)[jsonFileKey] as Map)['recordTypeVisibilities'] = [];
+          }
+          const recordTypeVis: recordTypeVisibility = {
+            default: ['default', 'd'].includes(entry[fileName].toLowerCase()),
+            recordType: entry['Primary Value'],
+            visible: ['t', 'true', 'default', 'd'].includes(entry[fileName].toLowerCase()),
+          };
+          (((ret[fileName] as Map)[jsonFileKey] as Map)['recordTypeVisibilities'] as recordTypeVisibility[]).push(
+            recordTypeVis
+          );
+        });
+        break;
       case 'customMetadataTypeAccesses':
       case 'userPermissions':
         filesToCreate.forEach((fileName) => {
+          if (entry[fileName].toLowerCase() === 'skip') {
+            return;
+          }
           if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes(entry.Type)) {
             ((ret[fileName] as Map)[jsonFileKey] as Map)[entry.Type] = [];
           }
@@ -116,6 +152,9 @@ export function mapCsvToJSON(
         break;
       case 'classAccesses':
         filesToCreate.forEach((fileName) => {
+          if (entry[fileName].toLowerCase() === 'skip') {
+            return;
+          }
           if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes('classAccesses')) {
             ((ret[fileName] as Map)[jsonFileKey] as Map)['classAccesses'] = [];
           }
@@ -128,6 +167,9 @@ export function mapCsvToJSON(
         break;
       case 'layoutAssignments':
         filesToCreate.forEach((fileName) => {
+          if (entry[fileName].toLowerCase() === 'skip') {
+            return;
+          }
           if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes('layoutAssignments')) {
             ((ret[fileName] as Map)[jsonFileKey] as Map)['layoutAssignments'] = [];
           }
@@ -136,6 +178,21 @@ export function mapCsvToJSON(
             recordType: entry[fileName],
           };
           (((ret[fileName] as Map)[jsonFileKey] as Map)['layoutAssignments'] as layoutAssignment[]).push(layoutAssn);
+        });
+        break;
+      case 'tabVisibilities':
+        filesToCreate.forEach((fileName) => {
+          if (entry[fileName].toLowerCase() === 'skip') {
+            return;
+          }
+          if (!Object.keys((ret[fileName] as Map)[jsonFileKey]).includes('tabVisibilities')) {
+            ((ret[fileName] as Map)[jsonFileKey] as Map)['tabVisibilities'] = [];
+          }
+          const tabVis: tabVisibility = {
+            tab: entry['Primary Value'],
+            visibility: ['t', 'true'].includes(entry[fileName].toLowerCase()) ? 'DefaultOn' : 'DefaultOff',
+          };
+          (((ret[fileName] as Map)[jsonFileKey] as Map)['tabVisibilities'] as tabVisibility[]).push(tabVis);
         });
         break;
       case 'objectPermissions':
@@ -152,15 +209,36 @@ export function mapCsvToJSON(
             allowEdit: entry[fileName].toLowerCase().includes('u'),
             allowRead: entry[fileName].toLowerCase().includes('r'),
             modifyAllRecords: entry[fileName].toLowerCase().includes('m'),
-            viewAllRecords: entry[fileName].toLowerCase().includes('v'),
             object: entry['Primary Value'],
+            viewAllRecords: entry[fileName].toLowerCase().includes('v'),
           };
           (((ret[fileName] as Map)[jsonFileKey] as Map)['objectPermissions'] as objectPermission[]).push(objPerm);
         });
         break;
       case 'label':
         filesToCreate.forEach((fileName) => {
+          if (entry[fileName].toLowerCase() === 'skip') {
+            return;
+          }
           ((ret[fileName] as Map)[jsonFileKey] as Map)['label'] = entry[fileName];
+        });
+        break;
+      case 'custom':
+        filesToCreate.forEach((fileName) => {
+          if (entry[fileName].toLowerCase() === 'skip') {
+            return;
+          }
+          ((ret[fileName] as Map)[jsonFileKey] as Map)['custom'] = ['t', 'true'].includes(entry[fileName].toLowerCase())
+            ? 'true'
+            : 'false';
+        });
+        break;
+      case 'userLicense':
+        filesToCreate.forEach((fileName) => {
+          if (entry[fileName].toLowerCase() === 'skip') {
+            return;
+          }
+          ((ret[fileName] as Map)[jsonFileKey] as Map)['userLicense'] = entry[fileName];
         });
         break;
     }

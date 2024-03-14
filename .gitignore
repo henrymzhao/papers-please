@@ -47,3 +47,4 @@ oclif.manifest.json
 
 oclif.lock
 /output/
+/test/

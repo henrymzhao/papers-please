@@ -5,6 +5,7 @@ import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import json2xml from '../../util/json2xml.js';
 import { csvToJson, getFileNames, mapCsvToJSON, FILE_TYPE } from '../../util/generateUtils.js';
+import { PROFILE_POSTFIX } from '../../util/constants.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('papers-please', 'generate.profile');
@@ -44,12 +45,12 @@ export default class GenerateProfile extends SfCommand<GenerateProfileResult> {
     const rawJsonConversion: Array<Record<string, string>> = csvToJson(csvInput);
     const profilesToCreate = getFileNames(rawJsonConversion[0]);
     const preppedJsonForConversion = mapCsvToJSON(rawJsonConversion, profilesToCreate, FILE_TYPE.PROFILE);
-
+    // this.logJson(preppedJsonForConversion);
     profilesToCreate.forEach((profile) => {
       const profileData = preppedJsonForConversion[profile];
       fs.mkdirSync(outputPath, { recursive: true });
       fs.writeFileSync(
-        path.join(outputPath, `${profile}.profile-meta.xml`),
+        path.join(outputPath, `${profile}${PROFILE_POSTFIX}`),
         '<?xml version="1.0" encoding="UTF-8"?>\n' + json2xml(profileData)
       );
     });
