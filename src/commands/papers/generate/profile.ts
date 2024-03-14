@@ -1,18 +1,20 @@
+/* eslint-disable class-methods-use-this */
 import fs from 'node:fs';
 import path from 'node:path';
 import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { csvToJson, FILE_TYPE, getFileNames, mapCsvToJSON } from '../../util/generateUtils.js';
-import json2xml from '../../util/json2xml.js';
+import json2xml from '../../../util/json2xml.js';
+import { csvToJson, getFileNames, mapCsvToJSON, FILE_TYPE } from '../../../util/generateUtils.js';
+import { PROFILE_POSTFIX } from '../../../util/constants.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
-const messages = Messages.loadMessages('papers-please', 'generate.permset');
+const messages = Messages.loadMessages('papers-please', 'generate.profile');
 
-export type GeneratePermsetResult = {
-  path: string;
+export type GenerateProfileResult = {
+  success: boolean;
 };
 
-export default class GeneratePermset extends SfCommand<GeneratePermsetResult> {
+export default class GenerateProfile extends SfCommand<GenerateProfileResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
@@ -31,28 +33,30 @@ export default class GeneratePermset extends SfCommand<GeneratePermsetResult> {
     }),
   };
 
-  public async run(): Promise<GeneratePermsetResult> {
-    const { flags } = await this.parse(GeneratePermset);
+  public async run(): Promise<GenerateProfileResult> {
+    const { flags } = await this.parse(GenerateProfile);
+
     const csvPath: string = flags['csv-file'];
     const outputPath: string = flags['output-directory'];
+
     const csvInput: string = fs.readFileSync(csvPath, {
       encoding: 'utf-8',
     });
     const rawJsonConversion: Array<Record<string, string>> = csvToJson(csvInput);
     const profilesToCreate = getFileNames(rawJsonConversion[0]);
     const preppedJsonForConversion = mapCsvToJSON(rawJsonConversion, profilesToCreate, FILE_TYPE.PROFILE);
-
+    // this.logJson(preppedJsonForConversion);
     profilesToCreate.forEach((profile) => {
       const profileData = preppedJsonForConversion[profile];
       fs.mkdirSync(outputPath, { recursive: true });
       fs.writeFileSync(
-        path.join(outputPath, `${profile}.permissionset-meta.xml`),
+        path.join(outputPath, `${profile}${PROFILE_POSTFIX}`),
         '<?xml version="1.0" encoding="UTF-8"?>\n' + json2xml(profileData)
       );
     });
 
     return {
-      path: '/Users/henryzhao/Documents/papers-please/src/commands/generate/permset.ts',
+      success: true,
     };
   }
 }

@@ -4,8 +4,8 @@ import path from 'node:path';
 import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import { parseString } from 'xml2js';
-import { DELIMITER, Map } from '../../util/generateUtils.js';
-import { PROFILE_POSTFIX } from '../../util/constants.js';
+import { DELIMITER, Map } from '../../../util/generateUtils.js';
+import { PROFILE_POSTFIX } from '../../../util/constants.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('papers-please', 'convert.profile');
