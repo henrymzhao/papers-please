@@ -8,7 +8,7 @@ import { csvToJson, getFileNames, mapCsvToJSON, FILE_TYPE } from '../../../util/
 import { PROFILE_POSTFIX } from '../../../util/constants.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
-const messages = Messages.loadMessages('papers-please', 'generate.profile');
+const messages = Messages.loadMessages('sfdx-papers-please', 'generate.profile');
 
 export type GenerateProfileResult = {
   success: boolean;

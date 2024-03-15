@@ -7,7 +7,7 @@ import {convertXMLToCSV} from '../../../util/convertUtils.js';
 import {FILE_TYPE} from '../../../util/generateUtils.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
-const messages = Messages.loadMessages('papers-please', 'convert.profile');
+const messages = Messages.loadMessages('sfdx-papers-please', 'convert.profile');
 
 export type ConvertProfileResult = {
     path: string;

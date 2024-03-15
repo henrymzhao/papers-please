@@ -5,8 +5,8 @@ import {PERMSET_POSTFIX} from '../../../util/constants.js';
 import {convertXMLToCSV} from '../../../util/convertUtils.js';
 import {FILE_TYPE} from '../../../util/generateUtils.js';
 
-Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
-const messages = Messages.loadMessages('papers-please', 'papers.convert.permset');
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
+const messages = Messages.loadMessages('sfdx-papers-please', 'convert.permset');
 
 export type PapersConvertPermsetResult = {
     path: string;
