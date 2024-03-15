@@ -1,5 +1,5 @@
 {
-  "name": "papers-please",
+  "name": "sfdx-papers-please",
   "description": "Auto generates permissions from csv.",
   "version": "1.0.0",
   "dependencies": {
