@@ -62,6 +62,9 @@
         "subtopics": {
           "convert": {
             "description": "description for papers.convert"
+          },
+          "list": {
+            "description": "description for papers.list"
           }
         }
       }

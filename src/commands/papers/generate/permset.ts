@@ -4,7 +4,7 @@ import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import { csvToJson, FILE_TYPE, getFileNames, mapCsvToJSON } from '../../../util/generateUtils.js';
 import json2xml from '../../../util/json2xml.js';
-import {PERMSET_POSTFIX} from '../../../util/constants.js';
+import { PERMSET_POSTFIX } from '../../../util/constants.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('sfdx-papers-please', 'generate.permset');
