@@ -1,10 +1,8 @@
 import fs from 'node:fs';
-import path from 'node:path';
 import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { csvToJson, FILE_TYPE, getFileNames, mapCsvToJSON } from '../../../util/generateUtils.js';
-import json2xml from '../../../util/json2xml.js';
-import { PERMSET_POSTFIX } from '../../../util/constants.js';
+import {csvToJson, FILE_TYPE, generateXMLFromJSON, getFileNames, mapCsvToJSON} from '../../../util/generateUtils.js';
+import {PERMSET_POSTFIX} from '../../../util/constants.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('sfdx-papers-please', 'generate.permset');
@@ -44,12 +42,7 @@ export default class GeneratePermset extends SfCommand<GeneratePermsetResult> {
     const preppedJsonForConversion = mapCsvToJSON(rawJsonConversion, profilesToCreate, FILE_TYPE.PERMSET);
 
     profilesToCreate.forEach((profile) => {
-      const profileData = preppedJsonForConversion[profile];
-      fs.mkdirSync(outputPath, { recursive: true });
-      fs.writeFileSync(
-        path.join(outputPath, `${profile}${PERMSET_POSTFIX}`),
-        '<?xml version="1.0" encoding="UTF-8"?>\n' + json2xml(profileData)
-      );
+      generateXMLFromJSON(preppedJsonForConversion[profile], profile, outputPath, PERMSET_POSTFIX);
     });
 
     return {

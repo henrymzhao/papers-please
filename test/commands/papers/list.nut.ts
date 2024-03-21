@@ -1,7 +1,7 @@
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
 
-describe('papers list profiles NUTs', () => {
+describe('papers list NUTs', () => {
   let session: TestSession;
 
   before(async () => {
@@ -14,7 +14,7 @@ describe('papers list profiles NUTs', () => {
 
   it('should display provided name', () => {
     const name = 'World';
-    const command = `papers list profiles --name ${name}`;
+    const command = `papers list --name ${name}`;
     const output = execCmd(command, { ensureExitCode: 0 }).shellOutput.stdout;
     expect(output).to.contain(name);
   });

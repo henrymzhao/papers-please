@@ -1,3 +1,7 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import json2xml from './json2xml.js';
+
 export const DELIMITER: string = ',';
 
 interface fieldPermission {
@@ -265,4 +269,17 @@ function permSetFactory(): Map {
       '@xmlns': 'http://soap.sforce.com/2006/04/metadata',
     },
   };
+}
+
+export function generateXMLFromJSON(
+  toCreate: string | ThisType<typeof Map> | string[],
+  fileName: string,
+  outputPath: string,
+  postfix: string
+): void {
+  fs.mkdirSync(outputPath, { recursive: true });
+  fs.writeFileSync(
+    path.join(outputPath, `${fileName}${postfix}`),
+    '<?xml version="1.0" encoding="UTF-8"?>\n' + json2xml(toCreate)
+  );
 }

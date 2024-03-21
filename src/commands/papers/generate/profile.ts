@@ -1,10 +1,8 @@
 /* eslint-disable class-methods-use-this */
 import fs from 'node:fs';
-import path from 'node:path';
 import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import json2xml from '../../../util/json2xml.js';
-import { csvToJson, getFileNames, mapCsvToJSON, FILE_TYPE } from '../../../util/generateUtils.js';
+import { csvToJson, getFileNames, mapCsvToJSON, FILE_TYPE, generateXMLFromJSON } from '../../../util/generateUtils.js';
 import { PROFILE_POSTFIX } from '../../../util/constants.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
@@ -47,12 +45,7 @@ export default class GenerateProfile extends SfCommand<GenerateProfileResult> {
     const preppedJsonForConversion = mapCsvToJSON(rawJsonConversion, profilesToCreate, FILE_TYPE.PROFILE);
     // this.logJson(preppedJsonForConversion);
     profilesToCreate.forEach((profile) => {
-      const profileData = preppedJsonForConversion[profile];
-      fs.mkdirSync(outputPath, { recursive: true });
-      fs.writeFileSync(
-        path.join(outputPath, `${profile}${PROFILE_POSTFIX}`),
-        '<?xml version="1.0" encoding="UTF-8"?>\n' + json2xml(profileData)
-      );
+      generateXMLFromJSON(preppedJsonForConversion[profile], profile, outputPath, PROFILE_POSTFIX);
     });
 
     return {

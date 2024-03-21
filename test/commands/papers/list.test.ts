@@ -1,9 +1,9 @@
 import { TestContext } from '@salesforce/core/lib/testSetup.js';
 import { expect } from 'chai';
 import { stubSfCommandUx } from '@salesforce/sf-plugins-core';
-import PapersListProfiles from '../../../../src/commands/papers/list/profiles.js';
+import PapersList from '../../../src/commands/papers/list.js';
 
-describe('papers list profiles', () => {
+describe('papers list', () => {
   const $$ = new TestContext();
   let sfCommandStubs: ReturnType<typeof stubSfCommandUx>;
 
@@ -16,7 +16,7 @@ describe('papers list profiles', () => {
   });
 
   it('runs hello', async () => {
-    await PapersListProfiles.run([]);
+    await PapersList.run([]);
     const output = sfCommandStubs.log
       .getCalls()
       .flatMap((c) => c.args)
@@ -25,12 +25,12 @@ describe('papers list profiles', () => {
   });
 
   it('runs hello with --json and no provided name', async () => {
-    const result = await PapersListProfiles.run([]);
-    expect(result.path).to.equal('/Users/henryzhao/Documents/papers-please/src/commands/papers/list/profiles.ts');
+    const result = await PapersList.run([]);
+    expect(result.path).to.equal('/Users/henryzhao/Documents/papers-please/src/commands/papers/list.ts');
   });
 
   it('runs hello world --name Astro', async () => {
-    await PapersListProfiles.run(['--name', 'Astro']);
+    await PapersList.run(['--name', 'Astro']);
     const output = sfCommandStubs.log
       .getCalls()
       .flatMap((c) => c.args)
