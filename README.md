@@ -1,145 +1,147 @@
-# papers-please
+# sfdx-papers-please
 
-[![NPM](https://img.shields.io/npm/v/papers-please.svg?label=papers-please)](https://www.npmjs.com/package/papers-please) [![Downloads/week](https://img.shields.io/npm/dw/papers-please.svg)](https://npmjs.org/package/papers-please) [![License](https://img.shields.io/badge/License-BSD%203--Clause-brightgreen.svg)](https://raw.githubusercontent.com/salesforcecli/papers-please/main/LICENSE.txt)
+[![NPM](https://img.shields.io/npm/v/papers-please.svg?label=papers-please)](https://www.npmjs.com/package/sfdx-papers-please) [![Downloads/week](https://img.shields.io/npm/dw/papers-please.svg)](https://npmjs.org/package/sfdx-papers-please) [![License](https://img.shields.io/badge/License-BSD%203--Clause-brightgreen.svg)](https://raw.githubusercontent.com/salesforcecli/sfdx-papers-please/main/LICENSE.txt)
 
-## Using the template
+# Why
 
-This repository provides a template for creating a plugin for the Salesforce CLI. To convert this template to a working plugin:
+This plugin is built to solve the below problems:
+1. I have a minor change across many profiles, but manually editing each profile is tiresome and prone to errors
+2. I want to add permissions to a new custom Object across many files, but retrieving it then manually editing all the profiles is a pain
+3. I have existing profiles that I want to keep maintained and committed in version control, but I don't want to manually manage them at a metadata level
+   
+These pain-points all revolve a central theme of "metadata".
 
-1. Please get in touch with the Platform CLI team. We want to help you develop your plugin.
-2. Generate your plugin:
+Metadata is easy for machines to consume, but difficult for humans to understand and maintain.
 
+CSVs on the other hand, are much simpler to manage with software like Excel.
+# How
+
+I want to solve the above pain-points by moving away from manually managing metadata files, and instead depend on a well-maintained CSV file as the central source of truth.
+
+By keeping a central CSV file updated, we can achieve:
+1. An easily auditable matrix of permission for period security reviews
+2. A repeatable and consistent generation of permissions to deploy to all orgs
+3. Easy addition of new permissions via a cell entry, instead of manual clicks in the Salesforce org
+4. Turn permission setting and reviews into an easily accessible process instead of having it obfuscated away within Salesforce Profile pages
+
+This  process is accomplished by `generating` or `converting` profile or permission set metadata files to and from CSV formats.
+# What
+## To Install from NPM
+
+   ```bash
+   npm i sfdx-papers-please
    ```
-   sf plugins install dev
-   sf dev generate plugin
 
-   git init -b main
-   git add . && git commit -m "chore: initial commit"
-   ```
+## Generate
 
-3. Create your plugin's repo in the salesforcecli github org
-4. When you're ready, replace the contents of this README with the information you want.
+`sf papers generate permset` 
 
-## Learn about `sf` plugins
+or
 
-Salesforce CLI plugins are based on the [oclif plugin framework](<(https://oclif.io/docs/introduction.html)>). Read the [plugin developer guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_plugins.meta/sfdx_cli_plugins/cli_plugins_architecture_sf_cli.htm) to learn about Salesforce CLI plugin development.
+`sf papers generate profile`
 
-This repository contains a lot of additional scripts and tools to help with general Salesforce node development and enforce coding standards. You should familiarize yourself with some of the [node developer packages](#tooling) used by Salesforce.
+### Flags
+`-c, --csv-file=<value>` - CSV of Profile or PermissionSet permissions.
 
-Additionally, there are some additional tests that the Salesforce CLI will enforce if this plugin is ever bundled with the CLI. These test are included by default under the `posttest` script and it is required to keep these tests active in your plugin if you plan to have it bundled.
+`-p, --output-directory=<value>` - Output directory of generated profiles or permisision sets.
 
-### Tooling
-
-- [@salesforce/core](https://github.com/forcedotcom/sfdx-core)
-- [@salesforce/kit](https://github.com/forcedotcom/kit)
-- [@salesforce/sf-plugins-core](https://github.com/salesforcecli/sf-plugins-core)
-- [@salesforce/ts-types](https://github.com/forcedotcom/ts-types)
-- [@salesforce/ts-sinon](https://github.com/forcedotcom/ts-sinon)
-- [@salesforce/dev-config](https://github.com/forcedotcom/dev-config)
-- [@salesforce/dev-scripts](https://github.com/forcedotcom/dev-scripts)
-
-### Hooks
-
-For cross clouds commands, e.g. `sf env list`, we utilize [oclif hooks](https://oclif.io/docs/hooks) to get the relevant information from installed plugins.
-
-This plugin includes sample hooks in the [src/hooks directory](src/hooks). You'll just need to add the appropriate logic. You can also delete any of the hooks if they aren't required for your plugin.
-
-# Everything past here is only a suggestion as to what should be in your specific plugin's description
-
-This plugin is bundled with the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli). For more information on the CLI, read the [getting started guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm).
-
-We always recommend using the latest version of these commands bundled with the CLI, however, you can install a specific version or tag if needed.
-
-## Install
-
+### Example
 ```bash
-sf plugins install papers-please@x.y.z
+$ sf papers generate profile -c testInput.csv -p force-app/main/default/profiles
 ```
+## Convert
+`sf papers convert permset`
 
-## Issues
+or
 
-Please report any issues at https://github.com/forcedotcom/cli/issues
+`sf papers convert profile`
 
-## Contributing
+### Flags
+`-c, --profile-directory=<value>` - Path to Profile/Permission Sets to be converted to CSV.
 
-1. Please read our [Code of Conduct](CODE_OF_CONDUCT.md)
-2. Create a new issue before starting your project so that we can keep track of
-   what you are trying to add/fix. That way, we can also offer suggestions or
-   let you know if there is already an effort in progress.
-3. Fork this repository.
-4. [Build the plugin locally](#build)
-5. Create a _topic_ branch in your fork. Note, this step is recommended but technically not required if contributing using a fork.
-6. Edit the code in your fork.
-7. Write appropriate tests for your changes. Try to achieve at least 95% code coverage on any new code. No pull request will be accepted without unit tests.
-8. Sign CLA (see [CLA](#cla) below).
-9. Send us a pull request when you are done. We'll review your code, suggest any needed changes, and merge it in.
+`-p, --output-directory=<value>` - Output directory of new converted CSV files.
 
-### CLA
-
-External contributors will be required to sign a Contributor's License
-Agreement. You can do so by going to https://cla.salesforce.com/sign-cla.
-
-### Build
-
-To build the plugin locally, make sure to have yarn installed and run the following commands:
-
+### Example
 ```bash
-# Clone the repository
-git clone git@github.com:salesforcecli/papers-please
-
-# Install the dependencies and compile
-yarn && yarn build
+$ sf papers convert profile -c force-app/main/default/profiles -p some/path/
 ```
 
-To use your plugin, run using the local `./bin/dev` or `./bin/dev.cmd` file.
+## List
+This util command is used to retrieve all profiles from a target org, containing all metadata information instead of the barebones result from `sf force source retrieve -m Profile`.
 
+### Flags
+` -o, --target-org=<value>` - Org to list all profiles for.
+
+`-p, --output-directory=<value>` - Location to store all files generated.
+
+### Example
 ```bash
-# Run using local run file.
-./bin/dev hello world
+$ sf papers list -u ABC_UAT -p some/path/
 ```
+# Using the CSV
+Given Salesforce's metadata can get complex around Object accesses, I took some liberties to introduce some custom terminologies to make maintaining the CSV more agile.
 
-There should be no differences when running via the Salesforce CLI or using the local run file. However, it can be useful to link the plugin to do some additional testing or run your commands from anywhere on your machine.
-
-```bash
-# Link your plugin to the sf cli
-sf plugins link .
-# To verify
-sf plugins
+## CRUD+MV
+```xml
+<objectPermissions>
+    <allowCreate>true</allowCreate>
+    <allowDelete>true</allowDelete>
+    <allowEdit>true</allowEdit>
+    <allowRead>true</allowRead>
+    <modifyAllRecords>true</modifyAllRecords>
+    <object>CustomObject</object>
+    <viewAllRecords>true</viewAllRecords>
+</objectPermissions>
 ```
+The permission for this object is condensed down to: `CRUD+MV`
 
-## Commands
+`C` - Allow Create
 
-<!-- commands -->
+`R` - Allow Read
 
-- [`sf hello world`](#sf-hello-world)
+`U` - Allow Update
 
-## `sf hello world`
+`D` - Allow Delete
 
-Say hello either to the world or someone you know.
+`M` - Modify All
 
+`V` - View All
+
+The `+` symbol is purely to allow for easier human reading. Functionally `CRUDMV` and `CRUD+MV` is the same.
+
+## RW
+```xml
+<fieldPermissions>
+    <editable>true</editable>
+    <field>Case.Subject</field>
+    <readable>true</readable>
+</fieldPermissions>
 ```
-USAGE
-  $ sf hello world [--json] [-n <value>]
+This field permission value is condensed to: `RW`
 
-FLAGS
-  -n, --name=<value>  [default: World] The name of the person you'd like to say hello to.
+`R` - Readable
+`W` - Writable
 
-GLOBAL FLAGS
-  --json  Format output as json.
+## CSV Columns
+### Type
+Type of permission entry you're looking to add. E.g. `fieldPermissions`,  `objectPermissions`, `layoutAssignments`, etc.
+### Primary Value
+The value to assign to the above permission entry. 
 
-DESCRIPTION
-  Say hello either to the world or someone you know.
+For objects of full admin access, the primary value would be `CRUD+MV`. 
 
-  Say hello either to the world or someone you know.
+For a layout assignment, this would be your layout's name.
 
-EXAMPLES
-  Say hello to the world:
+For a field permission, this would be your field's name.
+### New Columns
+Each new column represents a new Profile or Permission Set.
 
-    $ sf hello world
+# Use Cases
+Some use cases that I am currently envisioning and building around:
+1. A central CSV file that can be shared with the end user/group/client to make setting permissions a collaborative effort
+2. Given the command can read+output to any directory designated, there's a lot of room to fit this into an automated pipeline build, so that profiles are auto-generated every time from the latest (versioned) CSV.
+3. Developers can manually generate the permission files for review before committing to VCS, saving them the hassle of manual `sf force source retrieves` and copy pasting
+4. An existing set of permission sets/profiles can be ported into CSV format for a security audit
+5. All profiles within an org can be exported into VCS if setting up for the first time
+6. All profiles/permission sets can be exported, then converted into CSV for security audits
 
-  Say hello to someone you know:
-
-    $ sf hello world --name Astro
-```
-
-<!-- commandsstop -->
