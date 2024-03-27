@@ -1,0 +1,8 @@
+﻿Type,Primary Value,Admin,Support Agent,Support Manager
+fieldPermissions,Case.Subject,RW,RW,R
+userPermissions,EditPublicFilters,TRUE,TRUE,FALSE
+layoutAssignments,Account-Account Layout,Account.SomeRecordType,-,Account.SomeRecordType
+fieldPermissions,Account.Name,RW,R,R
+objectPermissions,Account,CRUD+MV,-,CRUD
+recordTypeVisibilities,Account.SomeRecordType,Default,TRUE,TRUE
+classAccesses,SomeApexClass,TRUE,FALSE,TRUE
