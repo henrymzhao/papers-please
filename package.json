@@ -1,7 +1,15 @@
 {
   "name": "sfdx-papers-please",
   "description": "Auto generates permissions from csv.",
-  "version": "0.2.0",
+  "version": "0.2.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/henrymzhao/sfdx-papers-please.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
+  },
   "dependencies": {
     "@oclif/core": "^3.18.1",
     "@salesforce/core": "^6.4.7",
@@ -87,9 +95,6 @@
     "test:nuts": "nyc mocha \"**/*.nut.ts\" --slow 4500 --timeout 600000 --parallel",
     "test:only": "wireit",
     "version": "oclif readme"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "wireit": {
     "build": {
