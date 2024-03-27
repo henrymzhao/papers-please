@@ -1,7 +1,7 @@
 {
   "name": "sfdx-papers-please",
   "description": "Auto generates permissions from csv.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/henrymzhao/sfdx-papers-please.git"
