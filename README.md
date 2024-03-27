@@ -166,4 +166,3 @@ Some use cases that I am currently envisioning and building around:
 4. An existing set of permission sets/profiles can be ported into CSV format for a security audit
 5. All profiles within an org can be exported into VCS if setting up for the first time
 6. All profiles/permission sets can be exported, then converted into CSV for security audits
-

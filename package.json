@@ -1,7 +1,7 @@
 {
   "name": "sfdx-papers-please",
   "description": "Auto generates permissions from csv.",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "dependencies": {
     "@oclif/core": "^3.18.1",
     "@salesforce/core": "^6.4.7",
