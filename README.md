@@ -122,6 +122,10 @@ This field permission value is condensed to: `RW`
 `R` - Readable
 `W` - Writable
 
+## `-`
+Symbol used to indicate "do not populate anything".
+
+E.g. When you are setting Opportunity permissions but certain profile's licenses don't support Opportunity.
 ## CSV Columns
 ### Type
 Type of permission entry you're looking to add. E.g. `fieldPermissions`,  `objectPermissions`, `layoutAssignments`, etc.
@@ -136,6 +140,18 @@ For a field permission, this would be your field's name.
 ### New Columns
 Each new column represents a new Profile or Permission Set.
 
+### Sample CSV for Profiles
+Below is a sample CSV that can be used to as a base to generate Profiles
+```csv
+Type,Primary Value,Admin,Support Agent,Support Manager
+fieldPermissions,Case.Subject,RW,RW,R
+userPermissions,EditPublicFilters,TRUE,TRUE,FALSE
+layoutAssignments,Account-Account Layout,Account.SomeRecordType,-,Account.SomeRecordType
+fieldPermissions,Account.Name,RW,R,R
+objectPermissions,Account,CRUD+MV,-,CRUD
+recordTypeVisibilities,Account.SomeRecordType,Default,TRUE,TRUE
+classAccesses,SomeApexClass,TRUE,FALSE,TRUE
+```
 # Use Cases
 Some use cases that I am currently envisioning and building around:
 1. A central CSV file that can be shared with the end user/group/client to make setting permissions a collaborative effort
