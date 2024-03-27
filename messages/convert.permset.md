@@ -1,22 +1,14 @@
 # summary
 
-Summary of a command.
+Convert Permission Sets to CSV.
 
 # description
 
-More information about a command. Don't repeat the summary.
-
-# flags.name.summary
-
-Description of a flag.
-
-# flags.name.description
-
-More information about a flag. Don't repeat the summary.
+Convert a directory of permission sets into a singular CSV for editing.
 
 # examples
 
-- <%= config.bin %> <%= command.id %>
+`sf papers convert permset -c force-app/main/default/permissionSets -p some/path/`
 
 # flags.permset-directory.summary
 

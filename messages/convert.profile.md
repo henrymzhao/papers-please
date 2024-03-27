@@ -1,22 +1,14 @@
 # summary
 
-Summary of a command.
+Convert Profiles to CSV.
 
 # description
 
-More information about a command. Don't repeat the summary.
-
-# flags.name.summary
-
-Description of a flag.
-
-# flags.name.description
-
-More information about a flag. Don't repeat the summary.
+Convert a directory of Profiles into a singular CSV for editing.
 
 # examples
 
-- <%= config.bin %> <%= command.id %>
+`sf papers convert profile -c force-app/main/default/profiles -p some/path/`
 
 # flags.profile-directory.summary
 

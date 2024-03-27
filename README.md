@@ -152,6 +152,12 @@ objectPermissions,Account,CRUD+MV,-,CRUD
 recordTypeVisibilities,Account.SomeRecordType,Default,TRUE,TRUE
 classAccesses,SomeApexClass,TRUE,FALSE,TRUE
 ```
+
+You can also generate this file locally via:
+
+```bash
+sf papers sample -p sampleCSV/
+```
 # Use Cases
 Some use cases that I am currently envisioning and building around:
 1. A central CSV file that can be shared with the end user/group/client to make setting permissions a collaborative effort

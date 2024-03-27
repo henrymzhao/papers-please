@@ -1,23 +1,14 @@
 # summary
 
-Summary of a command.
+Generates a sample Profile CSV.
 
 # description
 
-More information about a command. Don't repeat the summary. 
-
-# flags.name.summary
-
-Description of a flag.
-
-# flags.name.description
-
-More information about a flag. Don't repeat the summary. 
+Generates a sample Profile CSV. 
 
 # examples
 
-- <%= config.bin %> <%= command.id %>
-
+`sf papers sample -p sampleCSV/`
 
 # flags.output-directory.summary
 

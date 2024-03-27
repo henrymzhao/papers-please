@@ -1,22 +1,14 @@
 # summary
 
-Summary of a command.
+Generate Profiles from CSV.
 
 # description
 
-More information about a command. Don't repeat the summary.
-
-# flags.name.summary
-
-Description of a flag.
-
-# flags.name.description
-
-More information about a flag. Don't repeat the summary.
+Generate a list of permission sets with all listed permissions from a CSV.
 
 # examples
 
-- <%= config.bin %> <%= command.id %>
+`sf papers generate profile -c testInput.csv -p force-app/main/default/profiles`
 
 # flags.csv-file.summary
 

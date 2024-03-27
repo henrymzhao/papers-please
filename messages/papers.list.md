@@ -1,23 +1,14 @@
 # summary
 
-Summary of a command.
+Fetches all profiles from Org.
 
 # description
 
-More information about a command. Don't repeat the summary.
-
-# flags.name.summary
-
-Description of a flag.
-
-# flags.name.description
-
-More information about a flag. Don't repeat the summary.
+This util command is used to retrieve all profiles from a target org, containing all metadata information instead of the barebones result from `sf force source retrieve -m Profile`.
 
 # examples
 
-- <%= config.bin %> <%= command.id %>
-
+`sf papers list -u ABC_UAT -p some/path/`
 
 # flags.target-org.summary
 
@@ -26,11 +17,3 @@ Org to list all profiles for.
 # flags.output-directory.summary
 
 Location to store all files generated.
-
-# flags.type.summary
-
-Type of permission files to list. Profile | PermissionSet.
-
-# error.UnexpectedTypeFlag
-
-Unexpected type flag passed in, expecting 'Profile' or 'PermissionSet'. Provided: %s.
