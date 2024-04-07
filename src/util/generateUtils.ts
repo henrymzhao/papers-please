@@ -4,13 +4,13 @@ import json2xml from './json2xml.js';
 
 export const DELIMITER: string = ',';
 
-interface fieldPermission {
+type fieldPermission = {
   editable: boolean;
   field: string;
   readable: boolean;
 }
 
-interface objectPermission {
+type objectPermission = {
   allowCreate: boolean;
   allowDelete: boolean;
   allowEdit: boolean;
@@ -20,33 +20,33 @@ interface objectPermission {
   viewAllRecords: boolean;
 }
 
-interface genericNameEnablement {
+type genericNameEnablement = {
   enabled: boolean;
   name: string;
 }
 
-interface layoutAssignment {
+type layoutAssignment = {
   layout: string;
   recordType: string;
 }
 
-interface tabVisibility {
+type tabVisibility = {
   tab: string;
   visibility: string;
 }
 
-interface recordTypeVisibility {
+type recordTypeVisibility = {
   default?: boolean;
   recordType: string;
   visible: boolean;
 }
 
-interface classAccess {
+type classAccess = {
   enabled: boolean;
   apexClass: string;
 }
 
-export interface Map {
+export type Map = {
   [key: string]: string | ThisType<this> | string[];
 }
 
